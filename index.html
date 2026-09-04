@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#137b72">
+  <title>ConnectChat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="authView" class="auth-shell">
+    <section class="auth-brand">
+      <div class="brand-mark"><i data-lucide="messages-square"></i></div>
+      <p class="eyebrow">CONNECTCHAT</p>
+      <h1>Zusammen reden.<br><em>Klar verbunden.</em></h1>
+      <p>Private Nachrichten und Gruppen für Menschen, die gemeinsam etwas bewegen.</p>
+    </section>
+    <section class="auth-panel">
+      <form id="loginForm" class="auth-form">
+        <p class="eyebrow">WILLKOMMEN ZURUECK</p><h2>Anmelden</h2>
+        <label>Benutzername<input id="loginUsername" autocomplete="username" required minlength="3" maxlength="30"></label>
+        <label>Passwort<input id="loginPassword" type="password" autocomplete="current-password" required minlength="8"></label>
+        <button class="primary-button" type="submit">Anmelden <i data-lucide="arrow-right"></i></button>
+        <p class="form-switch">Noch kein Konto? <button type="button" data-auth-form="registerForm">Registrieren</button></p>
+      </form>
+      <form id="registerForm" class="auth-form hidden">
+        <p class="eyebrow">NEU BEI CONNECTCHAT</p><h2>Konto erstellen</h2>
+        <label>Benutzername<input id="registerUsername" autocomplete="username" required pattern="[A-Za-z0-9_.-]{3,30}" placeholder="z. B. alex.meyer"></label>
+        <label>Status<input id="registerStatus" maxlength="120" placeholder="Bereit fuer neue Ideen"></label>
+        <label>Passwort<input id="registerPassword" type="password" autocomplete="new-password" required minlength="8" placeholder="Mindestens 8 Zeichen"></label>
+        <button class="primary-button" type="submit">Konto erstellen <i data-lucide="user-plus"></i></button>
+        <p class="form-switch">Schon dabei? <button type="button" data-auth-form="loginForm">Anmelden</button></p>
+      </form>
+    </section>
+  </main>
+
+  <main id="appView" class="app-shell hidden">
+    <aside class="sidebar">
+      <div class="sidebar-top"><div class="app-brand"><span class="brand-mark"><i data-lucide="messages-square"></i></span><span>Connect<span>Chat</span></span></div><button id="themeButton" class="icon-button" title="Darstellung wechseln" aria-label="Darstellung wechseln"><i data-lucide="sun-moon"></i></button></div>
+      <div id="ownProfile" class="profile-summary"></div>
+      <nav class="main-nav" aria-label="Hauptnavigation">
+        <button class="nav-item active" data-view="chats"><i data-lucide="message-circle"></i><span>Nachrichten</span></button>
+        <button class="nav-item" data-view="people"><i data-lucide="search"></i><span>Personen</span></button>
+        <button class="nav-item" data-view="groups"><i data-lucide="users-round"></i><span>Gruppen</span></button>
+      </nav>
+      <div class="sidebar-bottom"><button id="profileButton" class="nav-item"><i data-lucide="settings-2"></i><span>Mein Profil</span></button><button id="logoutButton" class="nav-item"><i data-lucide="log-out"></i><span>Abmelden</span></button></div>
+    </aside>
+    <section class="content-column">
+      <div id="chatsView" class="content-view"><header class="view-header"><div><p class="eyebrow">DEIN POSTEINGANG</p><h2>Nachrichten</h2></div><button id="newChatButton" class="icon-button accent" title="Neue Unterhaltung" aria-label="Neue Unterhaltung"><i data-lucide="square-pen"></i></button></header><div id="conversationList" class="conversation-list"></div></div>
+      <div id="peopleView" class="content-view hidden"><header class="view-header"><div><p class="eyebrow">VERBINDUNGEN</p><h2>Personen finden</h2></div></header><label class="search-box"><i data-lucide="search"></i><input id="userSearch" type="search" placeholder="Nach Benutzername suchen" autocomplete="off"></label><div id="searchResults" class="person-list empty-state">Suche nach einer Person, um einen privaten Chat zu starten.</div></div>
+      <div id="groupsView" class="content-view hidden"><header class="view-header"><div><p class="eyebrow">GEMEINSCHAFTEN</p><h2>Gruppen</h2></div><button id="createGroupButton" class="icon-button accent" title="Gruppe erstellen" aria-label="Gruppe erstellen"><i data-lucide="plus"></i></button></header><div id="groupList" class="group-list"></div></div>
+    </section>
+    <section class="chat-pane">
+      <div id="chatEmpty" class="pane-empty"><div class="empty-icon"><i data-lucide="message-circle-more"></i></div><h2>Deine Gesprache, an einem Ort.</h2><p>Wahle eine Unterhaltung oder finde eine Person.</p></div>
+      <div id="activeChat" class="active-chat hidden"><header id="chatHeader" class="chat-header"></header><div id="messages" class="message-feed"></div><form id="messageForm" class="message-composer"><textarea id="messageInput" rows="1" maxlength="2000" placeholder="Nachricht schreiben" disabled></textarea><button class="send-button" type="submit" title="Nachricht senden" aria-label="Nachricht senden"><i data-lucide="send"></i></button></form></div>
+    </section>
+  </main>
+
+  <dialog id="groupDialog" class="modal"><form id="groupForm" class="modal-content"><div class="modal-heading"><div><p class="eyebrow">NEUE GEMEINSCHAFT</p><h2>Gruppe erstellen</h2></div><button type="button" class="icon-button close-modal" aria-label="Schliessen"><i data-lucide="x"></i></button></div><label>Gruppenname<input id="groupName" required minlength="3" maxlength="80" placeholder="z. B. Projekt Aurora"></label><label>Beschreibung<textarea id="groupDescription" maxlength="500" placeholder="Worum geht es in dieser Gruppe?"></textarea></label><label>Gruppenbild<input id="groupImage" type="file" accept="image/png,image/jpeg,image/webp"></label><div class="modal-actions"><button type="button" class="ghost-button close-modal">Abbrechen</button><button class="primary-button" type="submit">Erstellen</button></div></form></dialog>
+  <dialog id="profileDialog" class="modal"><form id="profileForm" class="modal-content"><div class="modal-heading"><div><p class="eyebrow">DEIN KONTO</p><h2>Profil bearbeiten</h2></div><button type="button" class="icon-button close-modal" aria-label="Schliessen"><i data-lucide="x"></i></button></div><label>Benutzername<input id="profileUsername" disabled></label><label>Status<input id="profileStatus" maxlength="120"></label><label>Profilbild<input id="profileImage" type="file" accept="image/png,image/jpeg,image/webp"></label><div class="modal-actions"><button type="button" class="ghost-button close-modal">Abbrechen</button><button class="primary-button" type="submit">Speichern</button></div></form></dialog>
+  <dialog id="manageDialog" class="modal"><div class="modal-content manage-content"><div class="modal-heading"><div><p class="eyebrow">GRUPPENVERWALTUNG</p><h2 id="manageTitle">Gruppe verwalten</h2></div><button type="button" class="icon-button close-modal" aria-label="Schliessen"><i data-lucide="x"></i></button></div><form id="editGroupForm"><label>Gruppenname<input id="editGroupName" required minlength="3" maxlength="80"></label><label>Beschreibung<textarea id="editGroupDescription" maxlength="500"></textarea></label><button class="ghost-button" type="submit">Aenderungen speichern</button></form><section><h3>Offene Anfragen</h3><div id="requestList" class="manage-list"></div></section><section><h3>Mitglieder</h3><div id="memberList" class="manage-list"></div></section><button id="deleteGroupButton" class="danger-button" type="button">Gruppe loeschen</button></div></dialog>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
